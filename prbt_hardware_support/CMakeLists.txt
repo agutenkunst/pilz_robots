@@ -8,6 +8,8 @@ add_definitions(-Werror)
 add_definitions(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
+  actionlib
+  actionlib_msgs
   message_filters
   message_generation
   roscpp
@@ -18,11 +20,19 @@ find_package(catkin REQUIRED COMPONENTS
 # message generation
 add_message_files(
   FILES
+  BrakeTestStatus.msg
   ModbusMsgInStamped.msg
+)
+
+# action generation
+add_action_files(
+  FILES
+  BrakeTest.action
 )
 
 generate_messages(
   DEPENDENCIES
+  actionlib_msgs
   std_msgs
 )
 
@@ -31,7 +41,7 @@ generate_messages(
 ###################################
 catkin_package(
   INCLUDE_DIRS include
-  CATKIN_DEPENDS message_runtime std_msgs
+  CATKIN_DEPENDS message_runtime actionlib actionlib_msgs std_msgs
 )
 
 ###########
