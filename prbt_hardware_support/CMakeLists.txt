@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   std_srvs
+  roslint
 )
 
 # message generation
@@ -63,6 +64,12 @@ add_executable(
 )
 add_dependencies(pilz_modbus_read_client_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${PROJECT_NAME}_generate_messages_cpp)
 target_link_libraries(pilz_modbus_read_client_node ${catkin_LIBRARIES} modbus)
+
+#############
+## Linting ##
+#############
+
+roslint_cpp()
 
 #############
 ## Install ##
