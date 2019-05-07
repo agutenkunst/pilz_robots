@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Pilz GmbH & Co. KG
+ * Copyright (c) 2019 Pilz GmbH & Co. KG
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -44,7 +44,7 @@ public:
    * This function periodically checks if the robot has moved by comparing joint positions from the joint_states topic
    * until the timeout is reached.
    */
-  static bool detectRobotMotion(double timeout = DEFAULT_ROBOT_MOTION_TIMEOUT_S);
+  static bool detectRobotMotion(double timeout_s = DEFAULT_ROBOT_MOTION_TIMEOUT_S);
 
   /**
    * @brief wait for a single message on the joint_states topic and return it.
@@ -61,13 +61,13 @@ public:
                                                 const double tol = DEFAULT_JOINT_STATES_COMPARISON_TOLERANCE);
 };
 
-bool BrakeTestUtils::detectRobotMotion(double timeout)
+bool BrakeTestUtils::detectRobotMotion(double timeout_s)
 {
   auto msg_start{getCurrentJointStates()};
 
   ros::Time start = ros::Time::now();
   ros::Rate r(JOINT_STATES_COMPARISON_FREQUENCY);
-  while ((ros::Time::now() - start).toSec() < timeout && ros::ok())
+  while ((ros::Time::now() - start).toSec() < timeout_s && ros::ok())
   {
     auto msg_current{getCurrentJointStates()};
     if (compareJointStatePositions(msg_start, msg_current))
