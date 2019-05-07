@@ -184,6 +184,16 @@ if(CATKIN_ENABLE_TESTING)
   )
   #----------------------------------
 
+  # --- BrakeTestUtils unit test ---
+  add_rostest_gtest(unittest_brake_test_utils
+    test/unittests/unittest_brake_test_utils.test
+    test/unittests/unittest_brake_test_utils.cpp
+  )
+  target_link_libraries(unittest_brake_test_utils
+    ${catkin_LIBRARIES} ${pilz_testutils_LIBRARIES}
+  )
+  #----------------------------------
+
   # --- Stop integration test ---
   add_rostest_gmock(integrationtest_stop1
      test/integrationtests/integrationtest_stop1.test
