@@ -152,7 +152,7 @@ TEST_F(PilzStoModbusAdapterTest, testSetupNoDisableService)
   manipulator_.advertiseRecoverService(nh_, RECOVER_SERVICE_T);
 
   auto t = asyncConstructor();
-  ros::Duration(5.5).sleep();
+  ros::Duration(5.5).sleep(); // slightly longer than WAIT_FOR_SERVICE_TIMEOUT_S
 
   EXPECT_EQ(0, pub_.getNumSubscribers()); // the constructor should wait, no subscription yet
   manipulator_.advertiseHaltService(nh_, HALT_SERVICE_T);
@@ -203,7 +203,7 @@ TEST_F(PilzStoModbusAdapterTest, testSetupNoHoldService)
   manipulator_.advertiseRecoverService(nh_, RECOVER_SERVICE_T);
 
   auto t = asyncConstructor();
-  ros::Duration(5.5).sleep();
+  ros::Duration(5.5).sleep(); // slightly longer than WAIT_FOR_SERVICE_TIMEOUT_S
 
   EXPECT_EQ(0, pub_.getNumSubscribers()); // the constructor should wait, no subscription yet
   manipulator_.advertiseHoldService(nh_, HOLD_SERVICE_T);
