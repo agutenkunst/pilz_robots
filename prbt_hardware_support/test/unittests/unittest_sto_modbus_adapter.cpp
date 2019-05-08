@@ -160,7 +160,9 @@ TEST_F(PilzStoModbusAdapterTest, testSetupNoDisableService)
 }
 
 /**
- * @brief Test that no expection is thrown if there is no service for unholding the controller
+ * @brief Test constructor if there is no service for unholding the controller
+ *
+ * Expected: Constructor finishes successfully without unhold service.
  */
 TEST_F(PilzStoModbusAdapterTest, testSetupNoUnholdService)
 {
@@ -174,7 +176,9 @@ TEST_F(PilzStoModbusAdapterTest, testSetupNoUnholdService)
 }
 
 /**
- * @brief Test that no expection is thrown if there is no service for recovering the driver
+ * @brief Test constructor if there is no service for recovering the driver
+ *
+ * Expected: Constructor finishes successfully without recover service
  */
 TEST_F(PilzStoModbusAdapterTest, testSetupNoRecoverService)
 {
