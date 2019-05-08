@@ -20,6 +20,12 @@
 
 #include <ros/ros.h>
 
+#include <string>
+#include <utility>
+
+#include <canopen_chain_node/GetObject.h>
+#include <canopen_chain_node/SetObject.h>
+
 #include <prbt_hardware_support/BrakeTest.h>
 
 namespace prbt_hardware_support
@@ -35,14 +41,22 @@ class BrakeTestExecutor
 public:
   BrakeTestExecutor(ros::NodeHandle& nh);
 
-protected:
+private:
+  using BrakeTestStatus = std::pair<int8_t, std::string>;
+
+private:
   bool executeBraketest(BrakeTest::Request&, BrakeTest::Response& response);
+  void triggerBrakeTestForJoint(const std::string& joint_name);
+  BrakeTestStatus getBrakeTestStatusForJoint(const std::string& joint_name);
+  ros::Duration getBrakeTestDuration(const std::string& joint_name);
 
 private:
   ros::NodeHandle nh_;
   //! Service which can be called by the user to trigger and execute a
   //! brake test for all joints.
   ros::ServiceServer brake_test_srv_;
+
+  ros::ServiceClient canopen_srv_client_;
 
 };
 

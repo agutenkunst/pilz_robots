@@ -17,8 +17,10 @@
 
 #include <prbt_hardware_support/brake_test_executor.h>
 
-#include <prbt_hardware_support/brake_test_utils.h>
+#include <sstream>
 
+#include <prbt_hardware_support/brake_test_utils.h>
+#include <prbt_hardware_support/brake_test_executor_exception.h>
 
 namespace prbt_hardware_support
 {
@@ -29,8 +31,68 @@ BrakeTestExecutor::BrakeTestExecutor(ros::NodeHandle& nh)
   brake_test_srv_ = nh_.advertiseService("prbt/execute_braketest",
                                          &BrakeTestExecutor::executeBraketest,
                                          this);
+
+  canopen_srv_client_ = nh_.serviceClient<BrakeTest>("prbt/driver/get_object");
 }
 
+ros::Duration BrakeTestExecutor::getBrakeTestDuration(const std::string& joint_name)
+{
+  canopen_chain_node::GetObject srv;
+  srv.request.node = joint_name;
+  srv.request.object = "2060sub1";
+  srv.request.cached = false;
+
+  if (!canopen_srv_client_.call(srv))
+  {
+    throw BrakeTestExecutorException("CANopen service to request brake test duration failed"); //=> service response invalid
+  }
+
+  if (!srv.response.success)
+  {
+    throw BrakeTestExecutorException(srv.response.message);
+  }
+
+  return ros::Duration(  std::stoi(srv.response.value)/1000  );
+}
+
+void BrakeTestExecutor::triggerBrakeTestForJoint(const std::string& joint_name)
+{
+  canopen_chain_node::SetObject srv;
+  srv.request.node = joint_name;
+  srv.request.object = "2060sub2";
+  srv.request.value = 1; // Demand brake test
+  srv.request.cached = false;
+
+  if (!canopen_srv_client_.call(srv))
+  {
+    throw BrakeTestExecutorException("CANopen service for brake test execution failed"); //=> service response invalid
+  }
+
+  if (!srv.response.success)
+  {
+    throw BrakeTestExecutorException(srv.response.message);
+  }
+}
+
+BrakeTestExecutor::BrakeTestStatus BrakeTestExecutor::getBrakeTestStatusForJoint(const std::string& joint_name)
+{
+  canopen_chain_node::GetObject srv;
+  srv.request.node = joint_name;
+  srv.request.object = "2060sub3";
+  srv.request.cached = false;
+
+  if (!canopen_srv_client_.call(srv))
+  {
+    throw BrakeTestExecutorException("CANopen service to request brake test status failed"); //=> service response invalid
+  }
+
+  // TODO: Ignore "srv.response.success" because of its redundancy with "srv.response.value"?
+
+  BrakeTestStatus status;
+  status.first = static_cast<int8_t>(std::stoi(srv.response.value));
+  status.second = srv.response.message;
+  return status;
+}
 
 bool BrakeTestExecutor::executeBraketest(BrakeTest::Request&,
                                          BrakeTest::Response& response)
@@ -42,14 +104,25 @@ bool BrakeTestExecutor::executeBraketest(BrakeTest::Request&,
     return true;
   }
 
-  // TODO: Get brake test duration
-
   // FOR EACH JOINT:
-    // TODO: Trigger brake test via CAN
-    // TODO: Check result of brake test
+  std::string joint_name = "prbt_joint_1";
+  try
+  {
+    ros::Duration brake_test_duration(getBrakeTestDuration(joint_name));
+    triggerBrakeTestForJoint(joint_name);
+    brake_test_duration.sleep();
+    BrakeTestStatus status {getBrakeTestStatusForJoint(joint_name)};
+    response.result = status.first;
+    response.msg = status.second;
+  }
+  catch (const BrakeTestExecutorException& ex)
+  {
+    response.msg = ex.what();
+    response.result = BrakeTest::Response::FAILURE;
+    return true;
+  }
   // END-FOR EACH
 
-  response.result = BrakeTest::Response::SUCCESS;
   return true;
 }
 
