@@ -21,11 +21,11 @@ env:
   matrix:
     - ROS_REPO=ros
     - ROS_REPO=testing
-matrix:
+    - ROS_DISTRO="melodic" ROS_REPO=ros-shadow-fixed CATKIN_LINT=true COVERAGE_PKGS="prbt_hardware_support"
   allow_failures:
     - env: ROS_REPO=ros
   fast_finish: true
 install:
-  - git clone --depth=1 --branch master https://github.com/ros-industrial/industrial_ci.git .industrial_ci
+  - git clone -b feature/coverage_ci --depth=1 https://github.com/PilzDE/industrial_ci.git .industrial_ci
 script:
   - .industrial_ci/travis.sh
