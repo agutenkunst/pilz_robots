@@ -36,7 +36,7 @@ public:
 /**
  * @brief Expection thrown by BrakeTestUtils::getCurrentJointStates().
  */
-class GetCurrentJointStatesException : BrakeTestUtilsException
+class GetCurrentJointStatesException : public BrakeTestUtilsException
 {
 public:
   GetCurrentJointStatesException(const std::string &what_arg) : BrakeTestUtilsException(what_arg)

@@ -70,7 +70,7 @@ bool BrakeTestUtils::detectRobotMotion(double timeout_s)
   while ((ros::Time::now() - start).toSec() < timeout_s && ros::ok())
   {
     auto msg_current{getCurrentJointStates()};
-    if (compareJointStatePositions(msg_start, msg_current))
+    if (!compareJointStatePositions(msg_start, msg_current))
     {
       return true;
     }
@@ -95,7 +95,7 @@ bool BrakeTestUtils::compareJointStatePositions(const sensor_msgs::JointStateCon
                                                 const double tol)
 {
   return std::equal(msg1->position.begin(), msg1->position.end(), msg2->position.begin(),
-                    [tol](double pos1, double pos2) { return (fabs(pos1 - pos2) > tol); });
+                    [tol](double pos1, double pos2) { return (fabs(pos1 - pos2) < tol); });
 };
 
 } // namespace prbt_hardware_support
