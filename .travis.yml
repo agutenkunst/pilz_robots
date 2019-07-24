@@ -18,7 +18,7 @@ env:
     - CATKIN_LINT=true
     - CATKIN_PARALLEL_TEST_JOBS="-p1"
     - DOCKER_RUN_OPTS="-e ROSCONSOLE_CONFIG_FILE='/var/rosconsole.config'"
-    - BEFORE_SCRIPT='echo $ROSCONSOLE_CONFIG_FILE'
+    - BEFORE_SCRIPT='echo $ROSCONSOLE_CONFIG_FILE && echo "log4j.logger.ros.prbt_hardware_support.ServerMock=DEBUG" > $ROSCONSOLE_CONFIG_FILE && cat $ROSCONSOLE_CONFIG_FILE'
   matrix:
     - ROS_REPO=ros
     - ROS_REPO=ros-shadow-fixed
