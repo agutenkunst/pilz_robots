@@ -21,6 +21,8 @@
 #include <chrono>
 #include <vector>
 
+#include <ros/ros.h>
+
 #include <modbus/modbus.h>
 
 #include <prbt_hardware_support/libmodbus_client.h>
@@ -282,5 +284,16 @@ TEST(LibModbusClientTests, setResponseTimeout)
 int main(int argc, char *argv[])
 {
   testing::InitGoogleTest(&argc, argv);
+
+  //Set logger level for server mock
+  if( ros::console::set_logger_level("ros.prbt_hardware_support.ServerMock", ros::console::levels::Debug) ) {
+    ros::console::notifyLoggerLevelsChanged();
+  }
+
+  //Set logger level for libmodbus client
+  if( ros::console::set_logger_level("ros.prbt_hardware_support.LibModbusClient", ros::console::levels::Debug) ) {
+    ros::console::notifyLoggerLevelsChanged();
+  }
+
   return RUN_ALL_TESTS();
 }
