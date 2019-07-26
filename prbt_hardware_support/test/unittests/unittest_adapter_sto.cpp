@@ -368,18 +368,18 @@ TEST_F(AdapterStoTest, testSkippingHoldPlusEnable)
 
   BARRIER2({RECOVER_SRV_CALLED_EVENT, HALT_SRV_CALLED_EVENT});
 
-  /**********
-   * Step 2 *
-   **********/
-  {
-    InSequence dummy;
-    EXPECT_RECOVER;
-    EXPECT_UNHOLD;
-  }
+  // /**********
+  //  * Step 2 *
+  //  **********/
+  // {
+  //   InSequence dummy;
+  //   EXPECT_RECOVER;
+  //   EXPECT_UNHOLD;
+  // }
 
-  adapter_sto.updateSto(true);
+  // adapter_sto.updateSto(true);
 
-  BARRIER2({RECOVER_SRV_CALLED_EVENT, UNHOLD_SRV_CALLED_EVENT});
+  // BARRIER2({RECOVER_SRV_CALLED_EVENT, UNHOLD_SRV_CALLED_EVENT});
 }
 
 /**
