@@ -179,15 +179,6 @@ if(CATKIN_ENABLE_TESTING)
   #catkin_lint: ignore_once missing_directory <-- needed for successful catkin_linting
   include_directories(SYSTEM ${gmock_SOURCE_DIR}/include/) #Declare system to supress strict conversion errors in gmock
 
-  add_rostest_gmock(unittest_update_filter
-                    test/unittests/unittest_update_filter.test
-                    test/unittests/unittest_update_filter.cpp
-  )
-  target_link_libraries(unittest_update_filter
-    ${catkin_LIBRARIES} ${pilz_testutils_LIBRARIES}
-  )
-  add_dependencies(unittest_update_filter ${${PROJECT_NAME}_EXPORTED_TARGETS})
-
   catkin_add_gtest(unittest_libmodbus_client
       test/unittests/unittest_libmodbus_client.cpp
       test/unittests/pilz_modbus_server_mock.cpp
@@ -223,6 +214,18 @@ if(CATKIN_ENABLE_TESTING)
   test/unittests/unittest_pilz_modbus_client_exception.cpp)
   add_dependencies(unittest_pilz_modbus_client_exception ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
+
+  #--- ModbusMsgInUtils unit test ---
+  catkin_add_gtest(unittest_modbus_msg_in_builder
+      test/unittests/unittest_modbus_msg_in_builder.cpp
+      src/modbus_msg_in_builder.cpp
+  )
+  target_link_libraries(unittest_modbus_msg_in_builder
+    ${catkin_LIBRARIES} ${pilz_testutils_LIBRARIES}
+  )
+  add_dependencies(unittest_modbus_msg_in_builder ${${PROJECT_NAME}_EXPORTED_TARGETS})
+  #----------------------------------------
+
   #--- PilzModbusClient unit test ---
   add_rostest_gmock(unittest_pilz_modbus_client
       test/unittests/unittest_pilz_modbus_client.test
@@ -234,6 +237,16 @@ if(CATKIN_ENABLE_TESTING)
     ${catkin_LIBRARIES} ${pilz_testutils_LIBRARIES}
   )
   add_dependencies(unittest_pilz_modbus_client ${${PROJECT_NAME}_EXPORTED_TARGETS})
+
+  #--- UpdateFilter unit test ---
+  add_rostest_gmock(unittest_update_filter
+                    test/unittests/unittest_update_filter.test
+                    test/unittests/unittest_update_filter.cpp
+  )
+  target_link_libraries(unittest_update_filter
+    ${catkin_LIBRARIES} ${pilz_testutils_LIBRARIES}
+  )
+  add_dependencies(unittest_update_filter ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
   #--- StoModbusAdapter unit test ---
   add_rostest_gmock(unittest_modbus_adapter_sto
@@ -397,17 +410,6 @@ if(CATKIN_ENABLE_TESTING)
     ${catkin_LIBRARIES} ${pilz_testutils_LIBRARIES}
   )
   #----------------------------------
-
-  #--- ModbusMsgInUtils unit test ---
-  catkin_add_gtest(unittest_modbus_msg_in_builder
-      test/unittests/unittest_modbus_msg_in_builder.cpp
-      src/modbus_msg_in_builder.cpp
-  )
-  target_link_libraries(unittest_modbus_msg_in_builder
-    ${catkin_LIBRARIES} ${pilz_testutils_LIBRARIES}
-  )
-  add_dependencies(unittest_modbus_msg_in_builder ${${PROJECT_NAME}_EXPORTED_TARGETS})
-  #----------------------------------------
 
   # to run: catkin_make -DENABLE_COVERAGE_TESTING=ON package_name_coverage (adding -j1 recommended)
   if(ENABLE_COVERAGE_TESTING)
