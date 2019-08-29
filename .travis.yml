@@ -16,6 +16,7 @@ env:
   global:
     - ROS_DISTRO="melodic"
     - CATKIN_LINT=true
+    - INTERLEAVE_OUTPUT_TESTS=true
   matrix:
     - ROS_REPO=ros
     - ROS_REPO=ros-shadow-fixed
@@ -24,6 +25,6 @@ matrix:
     - env: ROS_REPO=ros
   fast_finish: true
 install:
-  - git clone --depth=1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci
+  - git clone --depth=1 --branch feature/interleave_option https://github.com/agutenkunst/industrial_ci.git .industrial_ci
 script:
   - .industrial_ci/travis.sh
