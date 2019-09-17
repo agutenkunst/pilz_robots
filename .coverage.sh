@@ -5,6 +5,7 @@ env
 source "${ICI_SRC_PATH}/workspace.sh"
 
 echo "Checking coverage for [$COVERAGE_PKGS]"
+coverage_pass=true
 
 for pkg in $COVERAGE_PKGS; do
     echo "Creating coverage for [$pkg]"
@@ -39,4 +40,8 @@ if [ "${coverages// }" != "" ]; then
     for coverages in "${coverages[@]}"; do
         echo -e '  ' $coverages
     done
+fi
+
+if ! $coverage_pass; then
+  exit 1;
 fi
