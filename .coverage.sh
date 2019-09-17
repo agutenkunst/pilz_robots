@@ -2,7 +2,7 @@
 
 env
 
-source "${ICI_SRC_PATH}/workspace.sh"
+# source "${ICI_SRC_PATH}/workspace.sh" # <-- This line is needed
 
 echo "Checking coverage for [$COVERAGE_PKGS]"
 coverage_pass=true
