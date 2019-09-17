@@ -16,16 +16,18 @@ env:
   global:
     - ROS_DISTRO="melodic"
     - CATKIN_LINT=true
-    - CMAKE_ARGS="-DCATKIN_ENABLE_CLANG_TIDY=true"
+    - CMAKE_ARGS="-DCATKIN_ENABLE_CLANG_TIDY=true -DENABLE_COVERAGE_TESTING=ON -DCMAKE_BUILD_TYPE=Debug"
     - ADDITIONAL_DEBS="clang-tidy libclang-dev"
+    - NOT_TEST_BUILD=true # Test are run during coverage
+    - AFTER_SCRIPT="./.coverage.sh"
   matrix:
     - ROS_REPO=ros
     - ROS_REPO=testing
-    - ROS_DISTRO="melodic" ROS_REPO=ros-shadow-fixed CATKIN_LINT=true COVERAGE_PKGS="prbt_hardware_support"
+    - ROS_DISTRO="melodic" ROS_REPO=ros-shadow-fixed CATKIN_LINT=true DOCKER_RUN_OPTS='-e COVERAGE_PKGS="prbt_hardware_support"'
   allow_failures:
     - env: ROS_REPO=ros
   fast_finish: true
 install:
-  - git clone -b feature/coverage_ci --depth=1 https://github.com/PilzDE/industrial_ci.git .industrial_ci
+  - git clone -b master --depth=1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci
 script:
   - .industrial_ci/travis.sh
