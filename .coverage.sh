@@ -1,9 +1,5 @@
 #!/bin/bash
 
-env
-
-source "${ICI_SRC_PATH}/workspace.sh"
-
 echo "Checking coverage for [$COVERAGE_PKGS]"
 coverage_pass=true
 
