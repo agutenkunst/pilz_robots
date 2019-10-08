@@ -27,6 +27,7 @@ env:
       AFTER_SCRIPT="./.coverage.sh" \
       CMAKE_ARGS="-DENABLE_COVERAGE_TESTING=ON -DCMAKE_BUILD_TYPE=Debug" \
       DOCKER_RUN_OPTS='-e COVERAGE_PKGS="prbt_hardware_support"'
+matrix:
   allow_failures:
     - env: ROS_REPO=ros
   fast_finish: true
