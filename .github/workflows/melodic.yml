@@ -1,0 +1,15 @@
+name: Industrial CI
+on: [push]
+
+jobs:
+  build:
+
+    name: Main
+    runs-on: ubuntu-latest
+    steps:
+      - name: melodic
+        uses: docker://rosindustrial/ci:melodic-bionic
+        with:
+          entrypoint: /bin/bash
+          args: -c "git clone --depth 1 https://github.com/ros-industrial/industrial_ci.git /ici && /ici/ci.sh IN_DOCKER=1 TARGET_REPO_NAME=${GITHUB_REPOSITORY##*/}"
+        id: melodic-job
