@@ -11,5 +11,5 @@ jobs:
         uses: docker://ros:melodic-ros-core
         with:
           entrypoint: /bin/bash
-          args: -c "env && pwd && ls && git clone --branch master --depth 1 https://github.com/ros-industrial/industrial_ci.git /ici && /ici/ci.sh IN_DOCKER=1 TARGET_REPO_NAME=${{ github.repository }}"
+          args: -c "env && pwd && ls && git clone --branch master --depth 1 https://github.com/ros-industrial/industrial_ci.git /ici && /ici/ci.sh IN_DOCKER=1 TARGET_REPO_NAME=pilz_robots"
         id: melodic-job
