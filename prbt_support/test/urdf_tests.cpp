@@ -66,7 +66,7 @@ protected:
   // ros stuff
   ros::NodeHandle ph_ {"~"};
   robot_model::RobotModelConstPtr robot_model_ {
-    robot_model_loader::RobotModelLoader(GetParam()).getModel()};
+    robot_model_loader::RobotModelLoader(GetParam(), false).getModel()};
 
   // parameters
   std::string group_name_, tip_link_name_;
