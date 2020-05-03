@@ -1,5 +1,6 @@
 #!/bin/bash
 ret_val=0
+echo -e "travis_fold:start:changelog_check"
 for d in */ ; do
     diff="$(git diff FETCH_HEAD^ FETCH_HEAD --stat --name-only -- "$d")"
     if [[ $diff ]] && [[ $diff != *"CHANGELOG.rst"* ]]; then
@@ -14,3 +15,4 @@ for d in */ ; do
     echo "=================================="
 done
 exit $ret_val
+echo -e "travis_fold:end:changelog_check"
