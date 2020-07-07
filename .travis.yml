@@ -16,25 +16,17 @@ notifications:
       - i.martini@pilz.de
 env:
   global:
-    - CCACHE_DIR=$HOME/.ccache
     - ROS_DISTRO="melodic"
-    - CATKIN_LINT=true
-    - CMAKE_ARGS="-DCATKIN_ENABLE_CLANG_TIDY=true"
-    - ADDITIONAL_DEBS="clang-tidy libclang-dev"
+    - BUILDER="colcon"
+    - CODE_COVERAGE=codecov.io
   matrix:
     - ROS_REPO=main
-    - ROS_REPO=testing
-    - ROS_REPO="testing"
-      CATKIN_LINT=false NOT_TEST_BUILD=true
-      AFTER_SCRIPT="source /root/ici/industrial_ci_addons/check_coverage.sh && check_coverage pilz_control pilz_utils prbt_hardware_support"
-      CMAKE_ARGS="-DENABLE_COVERAGE_TESTING=ON -DCMAKE_BUILD_TYPE=Debug"
-    - CLANG_FORMAT_CHECK=file
 matrix:
   allow_failures:
     - env: ROS_REPO=main
   fast_finish: true
 install:
-  - git clone --depth=1 --branch master https://github.com/ros-industrial/industrial_ci.git .industrial_ci
-  - git clone --depth=1 --branch master https://github.com/PilzDE/industrial_ci_addons.git .industrial_ci/industrial_ci/src/industrial_ci_addons
+  - git clone --quiet --depth 1 https://github.com/Briancbn/industrial_ci.git .industrial_ci -b pr-coverage
 script:
   - .industrial_ci/travis.sh
+  - bash <(curl -s https://codecov.io/bash) -Z
