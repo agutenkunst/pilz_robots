@@ -66,8 +66,8 @@ jobs:
         - git --git-dir=.industrial_ci/.git rev-parse HEAD
       env:
         - ROS_REPO="testing"
-          BUILDER=colcon # Only change this for now
-          #CODE_COVERAGE="coveralls.io"
+          BUILDER=colcon
+          CODE_COVERAGE="coveralls.io"
       script:
         - .industrial_ci/travis.sh
 
