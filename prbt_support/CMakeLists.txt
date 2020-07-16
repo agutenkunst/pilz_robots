@@ -119,17 +119,17 @@ if(CATKIN_ENABLE_TESTING)
   )
   #----------------------------------------
 
-  add_rostest_gtest(urdf_tests
-  test/urdf_tests.test
-  test/urdf_tests.cpp
-  )
+  # add_rostest_gtest(urdf_tests
+  # test/urdf_tests.test
+  # test/urdf_tests.cpp
+  # )
 
-  target_link_libraries(urdf_tests
-    ${catkin_LIBRARIES}
-    ${roscpp_LIBRARIES}
-    ${moveit_core_LIBRARIES}
-    ${moveit_ros_planning_LIBRARIES}
-    ${Eigen3_LIBRARIES})
+  # target_link_libraries(urdf_tests
+  #   ${catkin_LIBRARIES}
+  #   ${roscpp_LIBRARIES}
+  #   ${moveit_core_LIBRARIES}
+  #   ${moveit_ros_planning_LIBRARIES}
+  #   ${Eigen3_LIBRARIES})
 
   find_package(roslaunch REQUIRED)
   roslaunch_add_file_check(launch)
