@@ -62,7 +62,7 @@ jobs:
     # Coveralls Job - Create report and upload to coveralls
     - name: "Coveralls"
       install:
-        - git clone --quiet --depth 1 https://github.com/agutenkunst/industrial_ci.git .industrial_ci -b pr-coverage
+        - git clone --quiet --depth 1 https://github.com/Briancbn/industrial_ci.git .industrial_ci -b pr-coverage
         - git --git-dir=.industrial_ci/.git rev-parse HEAD
       env:
         - ROS_REPO="testing"
